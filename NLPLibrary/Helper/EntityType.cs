@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace StanfordNLPProject.Helper
+namespace NLPLibrary.Helper
 {
     public enum EntityType
     {

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Runtime.Remoting.Channels;
 using System.Threading.Tasks;
-using StanfordNLPProject.Helper;
-using StanfordNLPProject.Model;
-namespace StanfordNLPProject.EntityExtractionService
+using NLPLibrary.Helper;
+using NLPLibrary.Model;
+
+namespace NLPLibrary.EntityExtractionService
 {
     public class EntityExtraction : IEntityExtraction
     {

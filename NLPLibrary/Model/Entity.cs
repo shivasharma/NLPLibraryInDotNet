@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using StanfordNLPProject.Helper;
 
-namespace StanfordNLPProject.Model
+namespace NLPLibrary.Model
 {
     public class Entity
     {

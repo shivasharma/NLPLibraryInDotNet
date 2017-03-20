@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using StanfordNLPProject.Model;
+using NLPLibrary.Model;
 
-namespace StanfordNLPProject.EntityExtractionService
+namespace NLPLibrary.EntityExtractionService
 {
     public interface IEntityExtraction
     {

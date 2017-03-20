@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Web.Helpers;
+﻿using System.Threading.Tasks;
 using System.Web.Http;
-using StanfordNLPProject.EntityExtractionService;
-using StanfordNLPProject.Helper;
-using StanfordNLPProject.Model;
-namespace StanfordNLP.Web.Api
+using NLPLibrary.EntityExtractionService;
+using NLPLibrary.Helper;
+using NLPLibrary.Model;
+
+namespace NLPLibrary.Api
 {
     [RoutePrefix("api")]
     public class EntityExtrationController : ApiController

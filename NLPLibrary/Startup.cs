@@ -5,7 +5,7 @@ using Microsoft.Owin.Cors;
 using Microsoft.Owin.Diagnostics;
 using Owin;
 
-namespace StanfordNLPProject
+namespace NLPLibrary
 {
     public class Startup
     {

@@ -1,9 +1,6 @@
-﻿using System;
-using Microsoft.Owin.Hosting;
-using StanfordNLPProject.Helper;
-using Topshelf;
+﻿using Topshelf;
 
-namespace StanfordNLPProject
+namespace NLPLibrary
 {
     internal class Program
     {

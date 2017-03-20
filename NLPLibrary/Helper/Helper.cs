@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
 
-namespace StanfordNLPProject.Helper
+namespace NLPLibrary.Helper
 {
     public static class Helper
     {

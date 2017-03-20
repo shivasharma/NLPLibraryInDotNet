@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Owin.Hosting;
 
-namespace StanfordNLPProject
+namespace NLPLibrary
 {
     public class Webserver
     {
