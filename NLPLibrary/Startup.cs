@@ -39,9 +39,7 @@ namespace StanfordNLPProject
 
             var config = new HttpConfiguration();
 
-            app.MapSignalR();
-
-            app.UseStaticFiles();
+          // app.UseStaticFiles();
 
             ConfigureWebApi(app);
             config.MapHttpAttributeRoutes();
