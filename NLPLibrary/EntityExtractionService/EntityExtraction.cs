@@ -53,60 +53,106 @@ namespace NLPLibrary.EntityExtractionService
         }
         public async Task<string> GetAsync(string myUrl)
         {
-            using (var client = new HttpClient())
-            {
-                return await client.GetStringAsync(myUrl);
-            }
+
+            var client = new HttpClient();
+
+            var GetDetails = client.GetStringAsync(myUrl);
+            return await GetDetails;
+
         }
-      
+
         public IEnumerable<string> GetBySelectedEntities(Entity entity)
         {
             var classifierResult = Startup.Classifier.classifyWithInlineXML(entity.Rawtext);
             var allEntites = new List<string>();
+            var output = new List<string>();
             foreach (var entityType in entity.Entities)
             {
-                GetEnitiesByType(entityType, classifierResult, allEntites);
+                GetEnitiesByType(entityType, classifierResult, allEntites, output);
 
             }
             return allEntites;
         }
 
-        public IEnumerable<string> GetDataByUrl(Entity entity)
+        public IEnumerable<string> GetData(Entity entity, string url)
         {
-            var result = (GetAsync(entity.Url));
-            var extractText = result.Result.StripHtml();
-            var classifierResult =  Startup.Classifier.classifyWithInlineXML(extractText);
-            var allEntites = new List<string>();
-            foreach (var entityType in entity.Entities)
+            var output = new List<string>();
+            if (entity != null)
             {
-                GetEnitiesByType(entityType, classifierResult, allEntites);
 
+                var classifierResult = Startup.Classifier.classifyWithInlineXML(entity.Rawtext);
+                var allEntites = new List<string>();
+                var keyValueListDict = new Dictionary<string, List<string>>();
+                var checkentities = IncludeAllEnityTypes(entity);
+                foreach (var entityType in checkentities.Entities)
+                {
+                    output = GetEnitiesByType(entityType, classifierResult, allEntites, output);
+
+                }
             }
-            return allEntites;
+            else
+
+            {
+
+                var passedurl = url.IsValidUrl();
+                if (passedurl)
+                {
+                    var result = GetAsync(url);
+                }
+                // var extractText = result.Result.StripHtml();
+                //var classifierResult = Startup.Classifier.classifyWithInlineXML(extractText);
+                var allEntites = new List<string>();
+                var keyValueListDict = new Dictionary<string, List<string>>();
+                var checkentities = IncludeAllEnityTypes(entity);
+                foreach (var entityType in checkentities.Entities)
+                {
+                    //output = GetEnitiesByType(entityType, classifierResult, allEntites, output);
+                }
+            }
+            return output.ToList();
         }
 
-        private static void GetEnitiesByType(string entityType, string classifierResult, List<string> allEntites)
+        private static Entity IncludeAllEnityTypes(Entity entity)
         {
+            if (entity == null)
+            {
+                var entityInitialize = new Entity();
+                entityInitialize.Entities = new List<string> { EntityType.Organization.ToString(), EntityType.Person.ToString(), EntityType.Location.ToString() };
+                return entityInitialize;
+            }
+            return entity;
+        }
+
+        private static List<string> GetEnitiesByType(string entityType, string classifierResult, List<string> allEntites, List<string> output)
+        {
+
+            var keyValueListDict = new Dictionary<string, List<string>>();
             switch (entityType)
             {
                 case "Organization":
                     var entityOrganization = classifierResult.FilterByEntityType(EntityType.Organization.ToEnumDescription());
                     var organization = entityOrganization.ToList().Distinct();
-                    allEntites.AddRange(organization);
+                    keyValueListDict.Add("company_ss", organization.ToList());
+                    output.Add(Helper.Helper.GetOutputString(new KeyValuePair<string, List<string>>("company_ss", keyValueListDict["company_ss"])));
                     break;
 
                 case "Person":
                     var entityPerson = classifierResult.FilterByEntityType(EntityType.Person.ToEnumDescription());
-                    var person = entityPerson.ToList().Distinct();
-                    allEntites.AddRange(person);
+                    var personEntity = entityPerson.ToList().Distinct();
+                    keyValueListDict.Add("person_ss", personEntity.ToList());
+                    output.Add(Helper.Helper.GetOutputString(new KeyValuePair<string, List<string>>("person_ss", keyValueListDict["person_ss"])));
                     break;
 
                 case "Location":
                     var entityLocation = classifierResult.FilterByEntityType(EntityType.Location.ToEnumDescription());
                     var location = entityLocation.ToList().Distinct();
-                    allEntites.AddRange(location);
+                    keyValueListDict.Add("location_ss", location.ToList());
+                    output.Add(Helper.Helper.GetOutputString(new KeyValuePair<string, List<string>>("location_ss", keyValueListDict["location_ss"])));
                     break;
             }
+
+            return output;
+
         }
     }
 }

@@ -58,26 +58,29 @@ namespace NLPLibrary.Api
             return Ok(result);
         }
 
-
-        [HttpPost]
+        [HttpGet]
         [Route("entities")]
-        public async Task<IHttpActionResult> PostByEntities([FromBody]Entity entity)
+        public async Task<IHttpActionResult> GetByUrl([FromUri]string url)
         {
-            var entityEtl = new EntityExtraction();
-            var result = await Task.Factory.StartNew(() => entityEtl.GetBySelectedEntities(entity));
-            return Ok(result);
+            if (ModelState.IsValid)
+            {
+                var entityEtl = new EntityExtraction();
+                var result = await Task.Factory.StartNew(() => Json(entityEtl.GetData(null, url)));
+                return Ok(result.Content);
+            }
+            return BadRequest("Invalid request");
         }
 
 
 
         [HttpPost]
-        [Route("url")]
-        public async Task<IHttpActionResult> PostByUrl([FromBody]Entity entity)
+        [Route("entities")]
+        public async Task<IHttpActionResult> PostByText([FromBody] Entity entity)
         {
             var entityEtl = new EntityExtraction();
-            var result =
-                await Task.Factory.StartNew(() => entityEtl.GetDataByUrl(entity));
-            return Ok(result);
+            var result = await Task.Factory.StartNew(() => Json(entityEtl.GetData(entity, null)));
+            return Ok(result.Content);
+
         }
     }
 }
