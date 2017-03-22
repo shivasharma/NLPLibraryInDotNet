@@ -264,7 +264,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="App_Data\classifiers\english.all.3class.distsim.crf.ser.gz" />
+    <None Include="App_Data\classifiers\english.all.3class.distsim.crf.ser.gz">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="App_Data\classifiers\english.all.3class.distsim.prop" />
     <None Include="App_Data\classifiers\english.conll.4class.distsim.crf.ser.gz" />
     <None Include="App_Data\classifiers\english.conll.4class.distsim.prop" />

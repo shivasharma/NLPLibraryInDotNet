@@ -5,12 +5,12 @@ using Topshelf;
 
 namespace NLPLibrary
 {
-    internal class Program
+     class Program
     {
         static void Main(string[] args)
         {
 
-            StartTopshelf();
+             StartTopshelf();
             //string uri = "http://localhost:8085";
             //using (WebApp.Start<Startup>(uri))
             //{
