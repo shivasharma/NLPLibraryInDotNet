@@ -9,7 +9,6 @@ namespace NLPLibrary.Api
     [RoutePrefix("api")]
     public class EntityExtrationController : ApiController
     {
-       
         [HttpGet]
         [Route("entity")]
         public async Task<IHttpActionResult> Get(string data)
@@ -18,6 +17,7 @@ namespace NLPLibrary.Api
             var result = await Task.Factory.StartNew(() => entity.GetEntity(data));
             return Ok(result);
         }
+
         [HttpGet]
         [Route("allentity")]
         public async Task<IHttpActionResult> GetAllEntity(string data)
@@ -60,7 +60,7 @@ namespace NLPLibrary.Api
 
         [HttpGet]
         [Route("entities")]
-        public async Task<IHttpActionResult> GetByUrl([FromUri]string url)
+        public async Task<IHttpActionResult> GetByUrl([FromUri] string url)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +72,6 @@ namespace NLPLibrary.Api
         }
 
 
-
         [HttpPost]
         [Route("entities")]
         public async Task<IHttpActionResult> PostByText([FromBody] Entity entity)
@@ -80,7 +79,6 @@ namespace NLPLibrary.Api
             var entityEtl = new EntityExtraction();
             var result = await Task.Factory.StartNew(() => Json(entityEtl.GetData(entity, null)));
             return Ok(result.Content);
-
         }
     }
 }

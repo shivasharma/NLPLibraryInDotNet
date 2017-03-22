@@ -7,15 +7,14 @@ namespace NLPLibrary.Helper
 {
     public static class Helper
     {
-       
         public static List<string> FilterByEntityType(this string data, string entityType)
         {
-            System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(entityType);
+            var regex = new Regex(entityType);
             var organization = new List<string>();
             foreach (var match in regex.Matches(data))
             {
                 var v = regex.Match(match.ToString());
-                string s = v.Groups[1].ToString();
+                var s = v.Groups[1].ToString();
                 organization.Add(s);
             }
             return organization;
@@ -24,7 +23,9 @@ namespace NLPLibrary.Helper
 
         public static string ToEnumDescription(this Enum value)
         {
-            var data = (DescriptionAttribute[])(value.GetType().GetField(value.ToString())).GetCustomAttributes(typeof(DescriptionAttribute), false);
+            var data =
+                (DescriptionAttribute[])
+                value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(DescriptionAttribute), false);
             return data.Length > 0 ? data[0].Description : value.ToString();
         }
 
@@ -36,14 +37,14 @@ namespace NLPLibrary.Helper
 
         public static string GetOutputString(this KeyValuePair<string, List<string>> kvp)
         {
-            string separator = ", ";
-            string outputString = kvp.Key + ": " + "[" + string.Join(separator, kvp.Value) + "]";
+            var separator = ", ";
+            var outputString = kvp.Key + ": " + "[" + string.Join(separator, kvp.Value) + "]";
             return outputString;
         }
 
         public static bool IsValidUrl(this string text)
         {
-            Regex rx = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
+            var rx = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
             return rx.IsMatch(text);
         }
     }
