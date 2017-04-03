@@ -1,14 +1,22 @@
 ﻿using System.IO;
 using System.Web.Http;
 using edu.stanford.nlp.ie.crf;
+using Microsoft.Owin;
 using Microsoft.Owin.Cors;
 using Microsoft.Owin.Diagnostics;
 using Owin;
 
+
 namespace NLPLibrary
 {
+    
     public class Startup
     {
+         static Startup()
+        {
+            Classifier= InitializeLibrary();
+        }
+       
         public static CRFClassifier Classifier { get; set; }
         public static CRFClassifier InitializeLibrary()
         {
@@ -21,22 +29,26 @@ namespace NLPLibrary
             return classifier;
         }
 
+        //public void Configure(IHostingEnvironment env)
+        //{
+            
+        //}
         public static void Configuration(IAppBuilder app)
         {
 
-            //app.Use(async (ctx, next) =>
-            //{
-            //    await ctx.Response.WriteAsync("NLP Server Initialized");
-            //    await next.Invoke();
-            //});
-            app.Use(async (context, next) =>
+            app.Use(async (ctx, next) =>
             {
-                // Add Header
-                context.Response.Headers["Product"] = "Web Api Self Host";
-
-                // Call next middleware
+                await ctx.Response.WriteAsync("NLP Server Initialized");
                 await next.Invoke();
             });
+            //app.Use(async (context, next) =>
+            //{
+            //    // Add Header
+            //    context.Response.Headers["Product"] = "Web Api Self Host";
+
+            //    // Call next middleware
+            //    await next.Invoke();
+            //});
 
             var config = new HttpConfiguration();
 
@@ -47,7 +59,8 @@ namespace NLPLibrary
             config.EnsureInitialized();
             app.UseCors(CorsOptions.AllowAll);
             app.UseErrorPage(new ErrorPageOptions() { ShowExceptionDetails = true });
-            Classifier = InitializeLibrary();
+            // Classifier = InitializeLibrary();
+            //InitializeLibrary();
             app.UseWelcomePage();
 
         }

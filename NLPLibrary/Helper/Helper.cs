@@ -47,5 +47,35 @@ namespace NLPLibrary.Helper
             var rx = new Regex(@"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
             return rx.IsMatch(text);
         }
+
+        public static string RemoveRedundantSlashes( this string uri)
+        {
+            const string http = "http://";
+            const string https = "https://";
+            string prefix = string.Empty;
+
+            if (uri.Contains(http))
+            {
+                uri = uri.Replace(http, string.Empty);
+                prefix = http;
+            }
+            else if (uri.Contains(https))
+            {
+                uri = uri.Replace(https, string.Empty);
+                prefix = https;
+            }
+
+            while (uri.Contains("//"))
+            {
+                uri = uri.Replace("//", "/");
+            }
+
+            if (!string.IsNullOrEmpty(prefix))
+            {
+                return prefix + uri;
+            }
+            return uri;
+        }
+
     }
 }

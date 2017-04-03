@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using edu.stanford.nlp.classify;
 using NLPLibrary.Helper;
 using NLPLibrary.Model;
 
@@ -74,6 +77,7 @@ namespace NLPLibrary.EntityExtractionService
 
         public IEnumerable<string> GetData(Entity entity, string url)
         {
+          
             var output = new List<string>();
             if (entity != null)
             {
@@ -87,19 +91,19 @@ namespace NLPLibrary.EntityExtractionService
             else
 
             {
-                var passedurl = url.IsValidUrl();
-                if (passedurl)
-                {
+                //var passedurl = url.IsValidUrl();
+                //if (passedurl)
+                //{
                     var result = GetAsync(url);
-                }
-                // var extractText = result.Result.StripHtml();
-                //var classifierResult = Startup.Classifier.classifyWithInlineXML(extractText);
+                //}
+                 var extractText = result.Result.StripHtml();
+                var classifierResult = Startup.Classifier.classifyWithInlineXML(extractText);
                 var allEntites = new List<string>();
                 var keyValueListDict = new Dictionary<string, List<string>>();
                 var checkentities = IncludeAllEnityTypes(entity);
                 foreach (var entityType in checkentities.Entities)
                 {
-                    //output = GetEnitiesByType(entityType, classifierResult, allEntites, output);
+                    output = GetEnitiesByType(entityType, classifierResult, allEntites, output);
                 }
             }
             return output.ToList();

@@ -1,8 +1,13 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using Microsoft.Owin.Infrastructure;
 using NLPLibrary.EntityExtractionService;
 using NLPLibrary.Helper;
 using NLPLibrary.Model;
+using System.Net.Http;
 
 namespace NLPLibrary.Api
 {
@@ -27,7 +32,7 @@ namespace NLPLibrary.Api
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("organization")]
         public async Task<IHttpActionResult> GetByOrganization(string data)
         {
@@ -58,14 +63,16 @@ namespace NLPLibrary.Api
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("entities")]
-        public async Task<IHttpActionResult> GetByUrl([FromUri] string url)
+        public async Task<IHttpActionResult> GetByUrl(string url)
         {
-            if (ModelState.IsValid)
-            {
+          if (ModelState.IsValid)
+          {
+              var temp = url.Replace("\\", "").Trim();
+
                 var entityEtl = new EntityExtraction();
-                var result = await Task.Factory.StartNew(() => Json(entityEtl.GetData(null, url)));
+                var result = await Task.Factory.StartNew(() => Json(entityEtl.GetData(null, temp)));
                 return Ok(result.Content);
             }
             return BadRequest("Invalid request");
